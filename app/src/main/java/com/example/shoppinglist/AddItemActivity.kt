@@ -1,5 +1,6 @@
 package com.example.shoppinglist
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -25,6 +26,7 @@ class AddItemActivity : AppCompatActivity() {
         val ItemName = findViewById<EditText>(R.id.editItemName)
         val ItemAmount = findViewById<EditText>(R.id.editItemAmount)
         val bttnAdd = findViewById<Button>(R.id.create)
+        val bttnReturn = findViewById<Button>(R.id.back)
 
         bttnCamera.setOnClickListener{
             if (ItemName.text != null){
@@ -62,12 +64,20 @@ class AddItemActivity : AppCompatActivity() {
             if (ItemAmount.text != null){
                 Amount = ItemAmount.text.toString()
             }
-            val i = Intent(this, ItemActivity:: class.java)
-            i.putExtra("name", Name)
-            i.putExtra("amount", Amount)
-//            i.putExtra("imageID", imageID)
-            startActivity(i)
-
+            if (Name != "" && Amount != "") {
+                val i = Intent(this, ItemActivity:: class.java)
+                i.putExtra("name", Name)
+                i.putExtra("amount", Amount)
+                val imageID = R.drawable.shop
+                i.putExtra("imageID", imageID)
+                setResult(Activity.RESULT_OK, i)
+                super.onBackPressed()
+//                startActivity(i)
+            }
+        }
+        bttnReturn.setOnClickListener{
+            setResult(Activity.RESULT_CANCELED)
+            super.onBackPressed()
         }
     }
 }

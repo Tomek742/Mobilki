@@ -1,10 +1,12 @@
 package com.example.shoppinglist
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.CheckBox
 import android.widget.ListView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shoppinglist.databinding.ActivityMainBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -12,11 +14,31 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
+
+
+
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var itemarraylist: ArrayList<Item>
-    var imageId = intArrayOf()
-    var amount = arrayOf<String>()
-    var name = arrayOf<String>()
+    var imageId = intArrayOf(
+        R.drawable.apples,
+        R.drawable.pears,
+        R.drawable.shop,
+        R.drawable.shop
+    )
+
+    var amount = arrayOf<String>(
+        "2 kg",
+        "6 pieces",
+        "single",
+        "once")
+
+    var name = arrayOf<String>(
+        "apples",
+        "pears",
+        "shop",
+        "main"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,20 +48,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        imageId = intArrayOf(
-            R.drawable.apples,
-            R.drawable.pears
-        )
-
-        name = arrayOf(
-            "apples",
-            "pears"
-        )
-
-        amount = arrayOf(
-            "2 kg",
-            "6 pieces"
-        )
 
         itemarraylist = ArrayList()
 
@@ -62,13 +70,45 @@ class MainActivity : AppCompatActivity() {
             i.putExtra("imageID", imageID)
             startActivity(i)
 
+                }
+        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // There are no request codes
+                val data: Intent? = result.data
+                val nameN: String? = data?.getStringExtra("name")
+                val amountN: String? = data?.getStringExtra("amount")
+                val imageIDN: Int = data?.getIntExtra("imageID",R.drawable.shop)!!
+
+                var imageIdClone = imageId.copyOf(imageId.size+1)
+                var amountClone = amount.copyOf(amount.size+1)
+                var nameClone = name.copyOf(name.size+1)
+
+//                imageIdClone = imageId.clone()
+//                amountClone = amount.clone()
+//                nameClone = name.clone()
+
+                nameClone[name.lastIndex + 1] = nameN.toString()
+                amountClone[amount.lastIndex + 1] = amountN.toString()
+                imageIdClone[imageId.lastIndex + 1] = imageIDN
+
+
+                name = nameClone.filterNotNull().toTypedArray()
+                amount = amountClone.filterNotNull().toTypedArray()
+                imageId = imageIdClone
+//                imageID[imageID.size+1] = imageIDN.toString()
+            }
         }
 
         binding.AddButtom.setOnClickListener {
             val i = Intent(this, AddItemActivity:: class.java)
-            startActivity(i)
+            resultLauncher.launch(i)
+            update()
+//            startActivityForResult(i, 100)
+//            startActivity(i)
 
         }
+
+
 
 //        binding.AddButtom.isClickable = true
 //        binding.listView.adapter = MyAdapter(this, itemarraylist)
@@ -135,4 +175,23 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
     }
+
+    override fun onResume() {
+        itemarraylist.clear()
+        for (i in name.indices){
+            val item = Item(name[i],amount[i],imageId[i])
+            itemarraylist.add(item)
+        }
+        super.onResume()
+    }
+
+    private fun update() {
+        itemarraylist.clear()
+        for (i in name.indices){
+            val item = Item(name[i],amount[i],imageId[i])
+            itemarraylist.add(item)
+        }
+        super.onNewIntent(intent)
+    }
+
 }

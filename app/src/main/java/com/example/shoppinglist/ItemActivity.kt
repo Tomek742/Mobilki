@@ -31,8 +31,10 @@ class ItemActivity : AppCompatActivity() {
 //        binding.itemName.text = name
 //        binding.itemAmount.text = amount
 //        binding.itemImage.setImageResource(imageID)
-        itemName.text = name.toString()
-        itemAmount.text = amount.toString()
+//        itemName.text = name
+        itemName.text = intent.getStringExtra("name")
+//        itemAmount.text = amount
+        itemAmount.text = intent.getStringExtra("amount")
         image.setImageResource(imageID)
 //        binding.checkBox.isClickable = true
 //        val textbox1 = findViewById<TextView>(
