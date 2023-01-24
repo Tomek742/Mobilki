@@ -63,29 +63,32 @@ class MainActivity : AppCompatActivity() {
                 name = nameClone.filterNotNull().toTypedArray()
                 amount = amountClone.filterNotNull().toTypedArray()
                 imageId = imageIdClone
+
 //                imageID[imageID.size+1] = imageIDN.toString()
             }
             if (result.resultCode == 5) {
                 var index: Int? = null
                 val data: Intent? = result.data
                 val nameN: String? = data?.getStringExtra("name")
-                val amountN: String? = data?.getStringExtra("amount")
-                val imageIDN: Int = data?.getIntExtra("imageID",R.drawable.shop)!!
+//                val amountN: String? = data?.getStringExtra("amount")
+//                val imageIDN: Int = data?.getIntExtra("imageID",R.drawable.shop)!!
                 for ((k, i) in name.withIndex()) {
                     if (i == nameN) {
                         index = k
                     }
                 }
                 if (index != null) {
-                    remove(imageId, index)
+                    imageId = remove(imageId, index)
                 }
                 if (index != null) {
-                    remove(name,index)
+                    name = remove(name,index)
                 }
                 if (index != null) {
-                    remove(amount,index)
+                    amount = remove(amount,index)
                 }
+//                update()
             }
+            binding.listView.adapter = MyAdapter(this, itemarraylist)
         }
 
         val addButton = findViewById<FloatingActionButton>(R.id.AddButtom)
@@ -228,15 +231,21 @@ class MainActivity : AppCompatActivity() {
         }
 
     private fun remove(a: Array<String>, index: Int): Array<String> {
+//        println("Remove called")      PRO DEBUGGING
         if (index < 0 || index >= a.size) {
+//            println("First if")
             return a
         }
         val result = arrayOfNulls<String>(a.size - 1)
         for (i in 0 until index) {
+//            println("for loop 1")
             result[i] = a[i]
+//            println(result[i])
         }
         for (i in index until a.size - 1) {
+//            println("for loop 2")
             result[i] = a[i + 1]
+//            println(result[i])
         }
         return result.filterNotNull().toTypedArray()
     }

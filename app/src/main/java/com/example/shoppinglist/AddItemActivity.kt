@@ -2,6 +2,7 @@ package com.example.shoppinglist
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -20,6 +21,7 @@ class AddItemActivity : AppCompatActivity() {
         var Name = ""
         var Amount = ""
 
+        val photo = findViewById<ImageView>(R.id.PlaceImageHere)
         val bttnCamera = findViewById<ImageView>(R.id.imageView1)
         val bttnWeb = findViewById<ImageView>(R.id.imageView2)
         val bttnFile = findViewById<ImageView>(R.id.imageView3)
