@@ -1,5 +1,7 @@
 package com.example.shoppinglist
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -44,6 +46,12 @@ class ItemActivity : AppCompatActivity() {
         }
 
         bttnRemove.setOnClickListener{
+        val i = Intent(this, MainActivity:: class.java)
+        i.putExtra("name", name)
+        i.putExtra("amount", amount)
+        i.putExtra("imageID", imageID)
+        setResult(5, i)
+
             //TODO remove then go to list
 
             super.onBackPressed()

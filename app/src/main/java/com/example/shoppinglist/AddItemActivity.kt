@@ -65,7 +65,7 @@ class AddItemActivity : AppCompatActivity() {
                 Amount = ItemAmount.text.toString()
             }
             if (Name != "" && Amount != "") {
-                val i = Intent(this, ItemActivity:: class.java)
+                val i = Intent(this, ItemActivity:: class.java) //SHOULDNT IT BE MAIN ACTIVITY???
                 i.putExtra("name", Name)
                 i.putExtra("amount", Amount)
                 val imageID = R.drawable.shop

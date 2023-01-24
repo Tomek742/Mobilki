@@ -12,14 +12,12 @@ import com.example.shoppinglist.databinding.ActivityMainBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
+
+
 class MainActivity : AppCompatActivity() {
-
-
-
-
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var itemarraylist: ArrayList<Item>
+
     var imageId = intArrayOf(
         R.drawable.apples,
         R.drawable.pears,
@@ -39,9 +37,56 @@ class MainActivity : AppCompatActivity() {
         "shop",
         "main"
     )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                val nameN: String? = data?.getStringExtra("name")
+                val amountN: String? = data?.getStringExtra("amount")
+                val imageIDN: Int = data?.getIntExtra("imageID",R.drawable.shop)!!
+
+                var imageIdClone = imageId.copyOf(imageId.size+1)
+                var amountClone = amount.copyOf(amount.size+1)
+                var nameClone = name.copyOf(name.size+1)
+
+//                imageIdClone = imageId.clone()
+//                amountClone = amount.clone()
+//                nameClone = name.clone()
+
+                nameClone[name.lastIndex + 1] = nameN.toString()
+                amountClone[amount.lastIndex + 1] = amountN.toString()
+                imageIdClone[imageId.lastIndex + 1] = imageIDN
+
+
+                name = nameClone.filterNotNull().toTypedArray()
+                amount = amountClone.filterNotNull().toTypedArray()
+                imageId = imageIdClone
+//                imageID[imageID.size+1] = imageIDN.toString()
+            }
+            if (result.resultCode == 5) {
+                var index: Int? = null
+                val data: Intent? = result.data
+                val nameN: String? = data?.getStringExtra("name")
+                val amountN: String? = data?.getStringExtra("amount")
+                val imageIDN: Int = data?.getIntExtra("imageID",R.drawable.shop)!!
+                for ((k, i) in name.withIndex()) {
+                    if (i == nameN) {
+                        index = k
+                    }
+                }
+                if (index != null) {
+                    remove(imageId, index)
+                }
+                if (index != null) {
+                    remove(name,index)
+                }
+                if (index != null) {
+                    remove(amount,index)
+                }
+            }
+        }
 
         val addButton = findViewById<FloatingActionButton>(R.id.AddButtom)
 //        val checkButton = findViewById<CheckBox>(R.id.checkBox)
@@ -68,35 +113,9 @@ class MainActivity : AppCompatActivity() {
             i.putExtra("name", name)
             i.putExtra("amount", amount)
             i.putExtra("imageID", imageID)
-            startActivity(i)
+            resultLauncher.launch(i)
+//            startActivity(i)
 
-                }
-        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
-                val data: Intent? = result.data
-                val nameN: String? = data?.getStringExtra("name")
-                val amountN: String? = data?.getStringExtra("amount")
-                val imageIDN: Int = data?.getIntExtra("imageID",R.drawable.shop)!!
-
-                var imageIdClone = imageId.copyOf(imageId.size+1)
-                var amountClone = amount.copyOf(amount.size+1)
-                var nameClone = name.copyOf(name.size+1)
-
-//                imageIdClone = imageId.clone()
-//                amountClone = amount.clone()
-//                nameClone = name.clone()
-
-                nameClone[name.lastIndex + 1] = nameN.toString()
-                amountClone[amount.lastIndex + 1] = amountN.toString()
-                imageIdClone[imageId.lastIndex + 1] = imageIDN
-
-
-                name = nameClone.filterNotNull().toTypedArray()
-                amount = amountClone.filterNotNull().toTypedArray()
-                imageId = imageIdClone
-//                imageID[imageID.size+1] = imageIDN.toString()
-            }
         }
 
         binding.AddButtom.setOnClickListener {
@@ -193,5 +212,34 @@ class MainActivity : AppCompatActivity() {
         }
         super.onNewIntent(intent)
     }
+
+    private fun remove(a: IntArray, index: Int): IntArray {
+        if (index < 0 || index >= a.size) {
+            return a
+        }
+        val result = IntArray(a.size - 1)
+        for (i in 0 until index) {
+            result[i] = a[i]
+        }
+        for (i in index until a.size - 1) {
+            result[i] = a[i + 1]
+        }
+        return result
+        }
+
+    private fun remove(a: Array<String>, index: Int): Array<String> {
+        if (index < 0 || index >= a.size) {
+            return a
+        }
+        val result = arrayOfNulls<String>(a.size - 1)
+        for (i in 0 until index) {
+            result[i] = a[i]
+        }
+        for (i in index until a.size - 1) {
+            result[i] = a[i + 1]
+        }
+        return result.filterNotNull().toTypedArray()
+    }
+
 
 }
