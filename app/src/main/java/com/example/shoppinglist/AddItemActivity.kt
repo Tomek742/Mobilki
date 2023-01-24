@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shoppinglist.databinding.ActivityItemBinding
@@ -40,6 +41,7 @@ class AddItemActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 imageID = Uri.parse(data?.getStringExtra("ImageID"))
+                println(imageID.toString())
 
                 if (imageID != null) {
                     photo.setImageURI(imageID)
@@ -65,8 +67,7 @@ class AddItemActivity : AppCompatActivity() {
             }
 
             val i = Intent(this, WebActivity::class.java)
-            startActivity(i)
-            //TODO Finish web serching
+            resultLauncher.launch(i)
         }
         bttnFile.setOnClickListener{
             if (ItemName.text != null){
@@ -79,7 +80,6 @@ class AddItemActivity : AppCompatActivity() {
             val i = Intent(this, GalleryActivity::class.java)
             resultLauncher.launch(i)
 
-            //TODO find file on phone
         }
 
         bttnAdd.setOnClickListener{
@@ -89,12 +89,10 @@ class AddItemActivity : AppCompatActivity() {
             if (ItemAmount.text != null){
                 Amount = ItemAmount.text.toString()
             }
-            if (Name != "" && Amount != "") {
+            if (Name != "" || Amount != "") {
                 val i = Intent(this, MainActivity:: class.java)
                 i.putExtra("name", Name)
                 i.putExtra("amount", Amount)
-                println("add")
-                println(imageID.toString())
                 if (imageID == null) {
                     imageID = Uri.parse("android.resource://com.example.shoppinglist/"+ R.drawable.shop)
                 }
@@ -103,6 +101,9 @@ class AddItemActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_OK, i)
                 super.onBackPressed()
 //                startActivity(i)
+            }
+            else {
+                Toast.makeText(this, "Please input name and amount", Toast.LENGTH_SHORT).show()
             }
         }
         bttnReturn.setOnClickListener{

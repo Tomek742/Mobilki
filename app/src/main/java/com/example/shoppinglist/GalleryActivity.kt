@@ -29,7 +29,6 @@ class GalleryActivity : AppCompatActivity() {
         val save = findViewById<Button>(R.id.buttonSavePicture)
         save.setOnClickListener {
             val i = Intent(this, AddItemActivity:: class.java)
-            println(imageUri.toString())
             i.putExtra("ImageID",imageUri.toString())
             setResult(Activity.RESULT_OK, i)
             super.onBackPressed()
