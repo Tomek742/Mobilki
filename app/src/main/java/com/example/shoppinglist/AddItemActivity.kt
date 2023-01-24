@@ -56,7 +56,9 @@ class AddItemActivity : AppCompatActivity() {
             if (ItemAmount.text != null){
                 Amount = ItemAmount.text.toString()
             }
-            //TODO CAMERA
+            val i = Intent(this, CameraActivity::class.java)
+            resultLauncher.launch(i)
+
         }
         bttnWeb.setOnClickListener{
             if (ItemName.text != null){
