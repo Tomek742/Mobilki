@@ -1,3 +1,5 @@
 package com.example.shoppinglist
 
-data class Item(var name: String, var amount: String, var imageID: Int)
+import android.net.Uri
+
+data class Item(var name: String, var amount: String, var imageID: Uri)

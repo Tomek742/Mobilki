@@ -2,6 +2,7 @@ package com.example.shoppinglist
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.CheckBox
@@ -12,17 +13,15 @@ import com.example.shoppinglist.databinding.ActivityMainBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-
-
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var itemarraylist: ArrayList<Item>
 
-    var imageId = intArrayOf(
-        R.drawable.apples,
-        R.drawable.pears,
-        R.drawable.shop,
-        R.drawable.shop
+    var imageId = arrayOf<Uri>(
+        Uri.parse("android.resource://com.example.shoppinglist/"+ R.drawable.apples),
+        Uri.parse("android.resource://com.example.shoppinglist/"+ R.drawable.pears),
+        Uri.parse("android.resource://com.example.shoppinglist/"+ R.drawable.shop),
+        Uri.parse("android.resource://com.example.shoppinglist/"+ R.drawable.shop)
     )
 
     var amount = arrayOf<String>(
@@ -45,7 +44,9 @@ class MainActivity : AppCompatActivity() {
                 val data: Intent? = result.data
                 val nameN: String? = data?.getStringExtra("name")
                 val amountN: String? = data?.getStringExtra("amount")
-                val imageIDN: Int = data?.getIntExtra("imageID",R.drawable.shop)!!
+                val imageIDN: Uri? = Uri.parse(data?.getStringExtra("ImageID"))
+                println("Main1")
+                println(imageIDN.toString())
 
                 var imageIdClone = imageId.copyOf(imageId.size+1)
                 var amountClone = amount.copyOf(amount.size+1)
@@ -59,10 +60,13 @@ class MainActivity : AppCompatActivity() {
                 amountClone[amount.lastIndex + 1] = amountN.toString()
                 imageIdClone[imageId.lastIndex + 1] = imageIDN
 
+                println("Main2")
+                println(imageIDN.toString())
+
 
                 name = nameClone.filterNotNull().toTypedArray()
                 amount = amountClone.filterNotNull().toTypedArray()
-                imageId = imageIdClone
+                imageId = imageIdClone.filterNotNull().toTypedArray()
 
 //                imageID[imageID.size+1] = imageIDN.toString()
             }
@@ -115,7 +119,7 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this, ItemActivity:: class.java)
             i.putExtra("name", name)
             i.putExtra("amount", amount)
-            i.putExtra("imageID", imageID)
+            i.putExtra("imageID", imageID.toString())
             resultLauncher.launch(i)
 //            startActivity(i)
 
@@ -124,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         binding.AddButtom.setOnClickListener {
             val i = Intent(this, AddItemActivity:: class.java)
             resultLauncher.launch(i)
-            update()
+//            update()
 //            startActivityForResult(i, 100)
 //            startActivity(i)
 
@@ -196,6 +200,25 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            }
 //        }
+    }
+
+    private fun remove(a: Array<Uri>, index: Int): Array<Uri> {
+        if (index < 0 || index >= a.size) {
+//            println("First if")
+            return a
+        }
+        val result = arrayOfNulls<Uri>(a.size - 1)
+        for (i in 0 until index) {
+//            println("for loop 1")
+            result[i] = Uri.parse(a[i].toString())
+//            println(result[i])
+        }
+        for (i in index until a.size - 1) {
+//            println("for loop 2")
+            result[i] = Uri.parse(a[i + 1].toString())
+//            println(result[i])
+        }
+        return result.filterNotNull().toTypedArray()
     }
 
     override fun onResume() {

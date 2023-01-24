@@ -3,14 +3,19 @@ package com.example.shoppinglist
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shoppinglist.databinding.ActivityItemBinding
+import java.net.URI
 
 class AddItemActivity : AppCompatActivity() {
+
+    var imageID: Uri? = null
 
     private lateinit var binding: ActivityItemBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +35,18 @@ class AddItemActivity : AppCompatActivity() {
         val bttnAdd = findViewById<Button>(R.id.create)
         val bttnReturn = findViewById<Button>(R.id.back)
 
+
+        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                imageID = Uri.parse(data?.getStringExtra("ImageID"))
+
+                if (imageID != null) {
+                    photo.setImageURI(imageID)
+                }
+
+            }
+        }
         bttnCamera.setOnClickListener{
             if (ItemName.text != null){
                 Name = ItemName.text.toString()
@@ -37,7 +54,7 @@ class AddItemActivity : AppCompatActivity() {
             if (ItemAmount.text != null){
                 Amount = ItemAmount.text.toString()
             }
-            //TODO access to camera
+            //TODO CAMERA
         }
         bttnWeb.setOnClickListener{
             if (ItemName.text != null){
@@ -47,7 +64,9 @@ class AddItemActivity : AppCompatActivity() {
                 Amount = ItemAmount.text.toString()
             }
 
-            //TODO search in web
+            val i = Intent(this, WebActivity::class.java)
+            startActivity(i)
+            //TODO Finish web serching
         }
         bttnFile.setOnClickListener{
             if (ItemName.text != null){
@@ -56,6 +75,10 @@ class AddItemActivity : AppCompatActivity() {
             if (ItemAmount.text != null){
                 Amount = ItemAmount.text.toString()
             }
+
+            val i = Intent(this, GalleryActivity::class.java)
+            resultLauncher.launch(i)
+
             //TODO find file on phone
         }
 
@@ -67,11 +90,16 @@ class AddItemActivity : AppCompatActivity() {
                 Amount = ItemAmount.text.toString()
             }
             if (Name != "" && Amount != "") {
-                val i = Intent(this, ItemActivity:: class.java) //SHOULDNT IT BE MAIN ACTIVITY???
+                val i = Intent(this, MainActivity:: class.java)
                 i.putExtra("name", Name)
                 i.putExtra("amount", Amount)
-                val imageID = R.drawable.shop
-                i.putExtra("imageID", imageID)
+                println("add")
+                println(imageID.toString())
+                if (imageID == null) {
+                    imageID = Uri.parse("android.resource://com.example.shoppinglist/"+ R.drawable.shop)
+                }
+//                val imageID = R.drawable.shop
+                i.putExtra("ImageID", imageID.toString())
                 setResult(Activity.RESULT_OK, i)
                 super.onBackPressed()
 //                startActivity(i)

@@ -2,6 +2,7 @@ package com.example.shoppinglist
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -20,7 +21,7 @@ class ItemActivity : AppCompatActivity() {
 
         val name = intent.getStringExtra("name")
         val amount = intent.getStringExtra("amount")
-        val imageID = intent.getIntExtra("imageID",R.drawable.pears)
+        val imageID = Uri.parse(intent.getStringExtra("imageID"))
 
         val image = findViewById<ImageView>(R.id.itemImage)
         val itemName = findViewById<TextView>(R.id.itemName)
@@ -37,7 +38,7 @@ class ItemActivity : AppCompatActivity() {
         itemName.text = intent.getStringExtra("name")
 //        itemAmount.text = amount
         itemAmount.text = intent.getStringExtra("amount")
-        image.setImageResource(imageID)
+        image.setImageURI(imageID)
 //        binding.checkBox.isClickable = true
 //        val textbox1 = findViewById<TextView>(
 
@@ -51,8 +52,6 @@ class ItemActivity : AppCompatActivity() {
         i.putExtra("amount", amount)
         i.putExtra("imageID", imageID)
         setResult(5, i)
-
-            //TODO remove then go to list
 
             super.onBackPressed()
         }

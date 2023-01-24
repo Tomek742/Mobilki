@@ -19,7 +19,7 @@ class MyAdapter(private val context: Activity, private val arrayList: ArrayList<
         val itemName: TextView = view.findViewById(R.id.itemName)
         val amount: TextView = view.findViewById(R.id.amount)
 
-        imageView.setImageResource(arrayList[position].imageID)
+        imageView.setImageURI(arrayList[position].imageID)
         itemName.text = arrayList[position].name
         amount.text = arrayList[position].amount
 
