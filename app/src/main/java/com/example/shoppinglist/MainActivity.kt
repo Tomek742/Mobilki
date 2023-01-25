@@ -230,6 +230,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
     }
 
+
     private fun update() {
         itemarraylist.clear()
         for (i in name.indices){

@@ -65,34 +65,34 @@
 
         <Button
             android:id="@+id/ButtonRemove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_below="@+id/itemAmount"
             android:text="Remove"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="600dp"
+            android:layout_marginTop="550dp"
             android:layout_marginBottom="20dp"
-            android:layout_marginStart="250dp"
+            android:layout_marginStart="240dp"
             android:layout_marginEnd="20dp"
             />
 
         <Button
             android:id="@+id/ButtonBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_below="@+id/itemAmount"
             android:text="Back"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="600dp"
+            android:layout_marginTop="550dp"
             android:layout_marginBottom="20dp"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="250dp"
+            android:layout_marginEnd="240dp"
             />
 
 

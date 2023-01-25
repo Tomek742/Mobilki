@@ -15,6 +15,8 @@
             android:layout_marginVertical="10dp"
             android:orientation="horizontal">
 
+
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/item_pic"
                 android:layout_width="80dp"
@@ -42,17 +44,14 @@
                     android:text="2kg"
                     android:layout_marginTop="7dp"
                     android:textStyle="bold"/>
+
+
             </LinearLayout>
+
+
         </LinearLayout>
 
-<!--        <CheckBox-->
-<!--            android:id="@+id/checkBox"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_marginRight="40dp"-->
-<!--            android:buttonTint="@color/white" />-->
+
 
         <!--        <TextView-->
 <!--            android:layout_width="wrap_content"-->
